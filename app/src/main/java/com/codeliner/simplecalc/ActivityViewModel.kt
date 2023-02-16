@@ -7,23 +7,27 @@ import androidx.lifecycle.liveData
 
 class ActivityViewModel : ViewModel() {
     private var counterValue = 0
-    private val counterValueLiveData = liveData<Int> {}
-
-    fun getCounterValueLiveData(): LiveData = counterLiveData
-
+    private val counterValueLiveData = MutableLiveData<Int>()
+    fun getCounterValueLiveData(): LiveData<Int> = counterValueLiveData
     fun onButtonClick(buttonId: Int) {
         when (buttonId) {
-            R.id.button_increase -> updateCount()
+            R.id.button_increase -> increaseCount()
             R.id.button_decrease -> decreaseCount()
-            R.id.button_clear -> counterValue = 0
+            R.id.button_clear -> clearCount()
         }
     }
-    private fun updateCount() {
+    private fun increaseCount() {
         counterValue++
         if (counterValue > 10) counterValue = 10
+        counterValueLiveData.value = counterValue
     }
     private fun decreaseCount() {
         counterValue--
         if (counterValue < 0) counterValue = 0
+        counterValueLiveData.value = counterValue
+    }
+    private fun clearCount() {
+        counterValue = 0
+        counterValueLiveData.value = counterValue
     }
 }

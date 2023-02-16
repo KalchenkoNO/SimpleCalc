@@ -11,7 +11,6 @@ import androidx.lifecycle.ViewModelProvider
 class MainActivity : AppCompatActivity() {
 
     lateinit var viewModel: ActivityViewModel
-
     lateinit var buttonIncrease: Button
     private lateinit var numberTv: TextView
     private lateinit var buttonClear: Button
@@ -20,9 +19,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
         viewModel = ViewModelProvider(this).get(ActivityViewModel::class.java)
-
         buttonIncrease = findViewById(R.id.button_increase)
         numberTv = findViewById(R.id.counter_tv)
         buttonClear = findViewById(R.id.button_clear)
@@ -30,7 +27,6 @@ class MainActivity : AppCompatActivity() {
         viewModel.getCounterValueLiveData().observe(this, Observer {
             numberTv.text = it.toString()
         })
-
         buttonIncrease.setOnClickListener {
                 viewModel.onButtonClick(R.id.button_increase)
         }
