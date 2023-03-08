@@ -38,14 +38,12 @@ class MainActivity : AppCompatActivity() {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        val userValue = counterValue
-        outState.putInt("KEY", counterValue)
+        outState.putInt(COUNTER_VALUE_KEY, counterValue)
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
-        val userInt = savedInstanceState.getInt("KEY", 0)
-        counterValue = userInt
+        counterValue = savedInstanceState.getInt(COUNTER_VALUE_KEY, 0)
         counterTv.text = counterValue.toString()
     }
 
