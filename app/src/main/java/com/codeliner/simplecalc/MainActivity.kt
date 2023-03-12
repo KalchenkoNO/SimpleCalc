@@ -4,52 +4,36 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 
 class MainActivity : AppCompatActivity() {
+    lateinit var viewModel: MainActivityViewModel
     private lateinit var buttonIncrease: Button
     private lateinit var counterTv: TextView
     private lateinit var buttonClear: Button
     private lateinit var buttonDecrease: Button
-    private var counterValue = 0
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        viewModel = ViewModelProvider(this).get(MainActivityViewModel::class.java)
         buttonIncrease = findViewById(R.id.button_increase)
-        counterTv = findViewById(R.id.counter)
+        counterTv = findViewById(R.id.counter_tv)
         buttonClear = findViewById(R.id.button_clear)
         buttonDecrease = findViewById(R.id.button_decrease)
-
+        viewModel.getCounterValueLiveData().observe(this, Observer {
+            counterTv.text = it.toString()
+        })
         buttonIncrease.setOnClickListener {
-            counterValue++; if (counterValue > 10) counterValue = 10
-            counterTv.text = counterValue.toString()
+            viewModel.onButtonClick(R.id.button_increase)
         }
         buttonDecrease.setOnClickListener {
-            counterValue--; if (counterValue < 0) counterValue = 0
-            counterTv.text = counterValue.toString()
+            viewModel.onButtonClick(R.id.button_decrease)
         }
         buttonClear.setOnClickListener {
-            counterValue = 0
-            counterTv.text = counterValue.toString()
+            viewModel.onButtonClick(R.id.button_clear)
         }
     }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        outState.putInt(COUNTER_VALUE_KEY, counterValue)
-    }
-
-    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
-        super.onRestoreInstanceState(savedInstanceState)
-        counterValue = savedInstanceState.getInt(COUNTER_VALUE_KEY, 0)
-        counterTv.text = counterValue.toString()
-    }
-
-    private companion object {
-        const val COUNTER_VALUE_KEY = "KEY"
-    }
-
-
 }
